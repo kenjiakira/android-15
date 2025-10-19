@@ -21,13 +21,15 @@ export default function Page() {
           <div className="w-full h-full bg-background overflow-hidden relative">
             {/* StatusBar - Fixed at top */}
             <div className="absolute top-0 left-0 right-0 z-50">
-              <StatusBar variant={!isUnlocked ? "dark" : "light"} />
+              <StatusBar variant={!isUnlocked ? "dark" : "light"} hideTime={!isUnlocked} />
             </div>
             
             {/* NavigationBar - Fixed at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 z-50">
-              <NavigationBar variant={!isUnlocked ? "dark" : "light"} />
-            </div>
+            {isUnlocked && (
+              <div className="absolute bottom-0 left-0 right-0 z-50">
+                <NavigationBar variant="light" />
+              </div>
+            )}
 
             {/* Main content - full screen */}
             <div className="w-full h-full">

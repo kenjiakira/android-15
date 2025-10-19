@@ -7,6 +7,7 @@ interface UseGestureManagerOptions {
   threshold?: number
   exitZoneHeight?: number
   isLockScreen?: boolean
+  enableFingerprint?: boolean
 }
 
 interface UseGestureManagerReturn {
@@ -18,17 +19,30 @@ interface UseGestureManagerReturn {
   handleMouseDown: (e: React.MouseEvent) => void
   handleMouseMove: (e: React.MouseEvent) => void
   handleMouseUp: () => void
+  // Fingerprint unlock
+  isFingerprintPressed: boolean
+  showWaveAnimation: boolean
+  waveProgress: number
+  handleFingerprintPress: () => void
+  handleFingerprintRelease: () => void
 }
 
 export function useGestureManager({ 
   onUnlock, 
   threshold = 60,
   exitZoneHeight = 200,
-  isLockScreen = false
+  isLockScreen = false,
+  enableFingerprint = false
 }: UseGestureManagerOptions): UseGestureManagerReturn {
   const [dragY, setDragY] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const startYRef = useRef(0)
+  
+  const [isFingerprintPressed, setIsFingerprintPressed] = useState(false)
+  const [showWaveAnimation, setShowWaveAnimation] = useState(false)
+  const [waveProgress, setWaveProgress] = useState(0)
+  const pressTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const progressTimerRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     const startY = e.touches[0].clientY
@@ -91,6 +105,44 @@ export function useGestureManager({
     setDragY(0)
   }, [dragY, threshold, onUnlock])
 
+  const handleFingerprintPress = useCallback(() => {
+    if (!enableFingerprint) return
+    
+    console.log('Fingerprint pressed!')
+    setIsFingerprintPressed(true)
+    setShowWaveAnimation(true)
+    setWaveProgress(0)
+    
+    const startTime = Date.now()
+    progressTimerRef.current = setInterval(() => {
+      const elapsed = Date.now() - startTime
+      const progress = Math.min(elapsed / 2000, 1) // 2 seconds
+      setWaveProgress(progress)
+    }, 16) // ~60fps
+    
+    pressTimerRef.current = setTimeout(() => {
+      console.log('Fingerprint unlock triggered!')
+      onUnlock()
+      setIsFingerprintPressed(false)
+      setShowWaveAnimation(false)
+      setWaveProgress(0)
+    }, 2000)
+  }, [enableFingerprint, onUnlock])
+
+  const handleFingerprintRelease = useCallback(() => {
+    if (pressTimerRef.current) {
+      clearTimeout(pressTimerRef.current)
+      pressTimerRef.current = null
+    }
+    if (progressTimerRef.current) {
+      clearInterval(progressTimerRef.current)
+      progressTimerRef.current = null
+    }
+    setIsFingerprintPressed(false)
+    setShowWaveAnimation(false)
+    setWaveProgress(0)
+  }, [])
+
   return {
     dragY,
     isDragging,
@@ -100,5 +152,10 @@ export function useGestureManager({
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
+    isFingerprintPressed,
+    showWaveAnimation,
+    waveProgress,
+    handleFingerprintPress,
+    handleFingerprintRelease,
   }
 }

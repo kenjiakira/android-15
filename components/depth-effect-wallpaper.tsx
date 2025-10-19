@@ -1,15 +1,27 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Camera, Flashlight } from "lucide-react"
 // import { FontManager, FONTS } from "@/lib/font-manager"
 
 interface DepthEffectWallpaperProps {
   className?: string
+  isFingerprintPressed?: boolean
+  showWaveAnimation?: boolean
+  waveProgress?: number
+  handleFingerprintPress?: () => void
+  handleFingerprintRelease?: () => void
 }
 
-export default function DepthEffectWallpaper({ className = "" }: DepthEffectWallpaperProps) {
+export default function DepthEffectWallpaper({ 
+  className = "", 
+  isFingerprintPressed = false,
+  showWaveAnimation = false,
+  waveProgress = 0,
+  handleFingerprintPress,
+  handleFingerprintRelease
+}: DepthEffectWallpaperProps) {
   const [currentTime, setCurrentTime] = useState(new Date())
 
   useEffect(() => {
@@ -19,14 +31,6 @@ export default function DepthEffectWallpaper({ className = "" }: DepthEffectWall
 
     return () => clearInterval(timer)
   }, [])
-
-  // useEffect(() => {
-  //   const fontManager = FontManager.getInstance()
-  //   fontManager.loadFonts([
-  //     FONTS.STRETCH_PRO_THIN,
-  //     FONTS.STRETCH_PRO
-  //   ])
-  // }, [])
 
   const formatTime = (date: Date) => {
     return date.toLocaleTimeString('en-US', {
@@ -81,15 +85,33 @@ export default function DepthEffectWallpaper({ className = "" }: DepthEffectWall
   }
 
   return (
-    <div className={`relative w-full h-full overflow-hidden pointer-events-none ${className}`}>
+    <>
+      <style jsx>{`
+        @keyframes wave {
+          0% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(3);
+            opacity: 0;
+          }
+        }
+      `}</style>
+      <div className={`relative w-full h-full overflow-hidden ${className}`}>
       {/* Background layer - layout 1 (plain background) */}
       <div className="absolute inset-0">
         <img
           src="/wallpaper/layout1.png"
           alt="Background"
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-all duration-300 select-none pointer-events-none ${
+            isFingerprintPressed ? 'brightness-50' : 'brightness-100'
+          }`}
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
         />
       </div>
+
 
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 -translate-y-30">
         <div className="text-center">
@@ -116,7 +138,11 @@ export default function DepthEffectWallpaper({ className = "" }: DepthEffectWall
         <img
           src="/wallpaper/layout3.png"
           alt="Foreground mountains"
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-all duration-300 select-none pointer-events-none ${
+            isFingerprintPressed ? 'brightness-50' : 'brightness-100'
+          }`}
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
         />
       </div>
 
@@ -135,10 +161,62 @@ export default function DepthEffectWallpaper({ className = "" }: DepthEffectWall
 
       {/* Fingerprint scanner simulation - center bottom */}
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-30">
-        <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border-2 border-white/30 flex items-center justify-center cursor-pointer hover:bg-white/20 transition-all">
-          <div className="w-12 h-12 rounded-full bg-white/5 border border-white/20"></div>
+        <div 
+          className={`w-14 h-14 rounded-full backdrop-blur-md border-4 flex items-center justify-center cursor-pointer transition-all ${
+            isFingerprintPressed 
+              ? 'bg-white/20 border-white/50 scale-105' 
+              : 'bg-white/10 border-white/30 hover:bg-white/20'
+          }`}
+          onMouseDown={(e) => {
+            e.preventDefault()
+            handleFingerprintPress?.()
+          }}
+          onMouseUp={(e) => {
+            e.preventDefault()
+            handleFingerprintRelease?.()
+          }}
+          onMouseLeave={(e) => {
+            e.preventDefault()
+            handleFingerprintRelease?.()
+          }}
+          onTouchStart={(e) => {
+            e.preventDefault()
+            handleFingerprintPress?.()
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault()
+            handleFingerprintRelease?.()
+          }}
+          onTouchCancel={(e) => {
+            e.preventDefault()
+            handleFingerprintRelease?.()
+          }}
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+        >
         </div>
+        
+        {/* Wave animation */}
+        {showWaveAnimation && (
+          <div className="absolute inset-0 pointer-events-none">
+            {[0, 1, 2].map((i) => (
+              <div
+                key={i}
+                className="absolute inset-0 rounded-full border-2 border-white/30"
+                style={{
+                  animation: `wave ${1.5}s ease-out infinite`,
+                  animationDelay: `${i * 0.3}s`,
+                  transform: `scale(${1 + waveProgress * 2})`,
+                  opacity: 1 - waveProgress
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+      </div>
+    </>
   )
 }

@@ -21,7 +21,13 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-  } = useGestureManager({ onUnlock, isLockScreen: true })
+    // Fingerprint unlock
+    isFingerprintPressed,
+    showWaveAnimation,
+    waveProgress,
+    handleFingerprintPress,
+    handleFingerprintRelease,
+  } = useGestureManager({ onUnlock, isLockScreen: true, enableFingerprint: true })
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -48,7 +54,14 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
       onMouseLeave={handleMouseUp}
     >
       {/* Depth Effect Wallpaper */}
-      <DepthEffectWallpaper className="absolute inset-0" />
+      <DepthEffectWallpaper 
+        className="absolute inset-0" 
+        isFingerprintPressed={isFingerprintPressed}
+        showWaveAnimation={showWaveAnimation}
+        waveProgress={waveProgress}
+        handleFingerprintPress={handleFingerprintPress}
+        handleFingerprintRelease={handleFingerprintRelease}
+      />
 
       {/* Overlay gradient for better text readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 z-5"></div>
