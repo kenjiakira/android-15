@@ -6,16 +6,21 @@ interface GoogleSearchWidgetProps {
   onSearch?: (query: string) => void
   onVoiceSearch?: () => void
   onLensSearch?: () => void
-}
+  onNavigateToGoogle?: () => void
+  }
 
 export default function GoogleSearchWidget({ 
   onSearch, 
   onVoiceSearch, 
-  onLensSearch 
+  onLensSearch,
+  onNavigateToGoogle
 }: GoogleSearchWidgetProps) {
   return (
     <div className="mt-6 mb-4">
-      <div className="bg-white/90 backdrop-blur-sm rounded-3xl pl-4 pr-1 py-1 shadow-lg border border-white/20">
+      <div 
+        className="bg-white/90 backdrop-blur-sm rounded-3xl pl-4 pr-1 py-1 shadow-lg border border-white/20"
+        onClick={onNavigateToGoogle}
+      >
         <div className="flex items-center gap-1">
           {/* Google Logo SVG */}
           <div className="flex items-center">

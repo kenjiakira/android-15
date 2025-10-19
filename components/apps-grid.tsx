@@ -107,6 +107,7 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
                     onSearch={(query) => console.log('Search:', query)}
                     onVoiceSearch={() => console.log('Voice search')}
                     onLensSearch={() => console.log('Lens search')}
+                    onNavigateToGoogle={() => onAppSelect('google')}
                   />
                 </div>
               )}

@@ -35,9 +35,6 @@ export default function Dock({ onAppSelect }: DockProps) {
                   className="object-cover rounded-2xl"
                 />
               </div>
-              <span className="text-xs font-medium text-white text-center line-clamp-1 font-system">
-                {app.name}
-              </span>
             </div>
           </button>
         ))}
