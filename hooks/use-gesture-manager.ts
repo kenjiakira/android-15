@@ -116,7 +116,7 @@ export function useGestureManager({
     const startTime = Date.now()
     progressTimerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime
-      const progress = Math.min(elapsed / 1500, 1) 
+      const progress = Math.min(elapsed / 500, 1) 
       setWaveProgress(progress)
     }, 16) // ~60fps
     
@@ -126,7 +126,7 @@ export function useGestureManager({
       setIsFingerprintPressed(false)
       setShowWaveAnimation(false)
       setWaveProgress(0)
-    }, 2000)
+    }, 500)
   }, [enableFingerprint, onUnlock])
 
   const handleFingerprintRelease = useCallback(() => {

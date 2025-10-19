@@ -13,7 +13,7 @@ export default function StatusBar({ variant = "dark", hideTime = false }: Status
   
   return (
     <div
-      className={`w-full flex justify-between items-center px-5 py-1.5 ${
+      className={`w-full flex justify-between items-center px-5 py-1.5 pointer-events-none ${
         variant === "light" ? "text-slate-900" : "text-white"
       }`}
       style={{

@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import Image from "next/image"
 import { useTime } from "@/components/time-provider"
-
+import { Sun, Volume2 } from 'lucide-react'
 interface QuickSettingsPanelProps {
   isVisible: boolean
   onClose: () => void
@@ -11,6 +11,7 @@ interface QuickSettingsPanelProps {
 
 interface ToggleState {
   wifi: boolean
+  mobileData: boolean
   bluetooth: boolean
   airplane: boolean
   autoBrightness: boolean
@@ -37,6 +38,7 @@ export default function QuickSettingsPanel({ isVisible, onClose }: QuickSettings
   const { time, date } = useTime()
   const [toggles, setToggles] = useState<ToggleState>({
     wifi: true,
+    mobileData: true,
     bluetooth: true,
     airplane: false,
     autoBrightness: true,
@@ -87,7 +89,7 @@ export default function QuickSettingsPanel({ isVisible, onClose }: QuickSettings
   }) => (
     <button
       onClick={onClick}
-      className={`${isLarge ? 'w-full h-20' : 'w-14 h-14'} ${isRounded ? 'rounded-full' : 'rounded-2xl'} flex items-center justify-center transition-all ${
+      className={`${isLarge ? 'w-32 h-20' : 'w-14 h-14'} ${isRounded ? 'rounded-full' : 'rounded-2xl'} flex items-center justify-center transition-all ${
         isActive 
           ? 'bg-blue-500 text-white' 
           : 'bg-gray-800/80 text-white/70'
@@ -105,37 +107,35 @@ export default function QuickSettingsPanel({ isVisible, onClose }: QuickSettings
     </button>
   )
 
-  if (!isVisible) return null
-
   return (
-    <div className="absolute inset-0 z-50 bg-black/80 backdrop-blur-sm">
+    <div className={`absolute inset-0 z-50 bg-black/80 backdrop-blur-sm transition-all duration-300 ${
+      isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
+    }`}>
       <div className="absolute top-0 left-0 right-0">
-        {/* Status Bar */}
         <div className="flex items-center justify-between px-6 py-2 text-white text-sm font-mi-sans">
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-3">
             <span>{date}</span>
+            <span>{time}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span>{time}</span>
+            <Image src="/svg/Signal.svg" alt="Signal" width={12} height={12} className="brightness-0 invert" />
             <Image src="/svg/wifi.svg" alt="WiFi" width={16} height={16} className="brightness-0 invert" />
-            <Image src="/svg/bluetooth.svg" alt="Bluetooth" width={16} height={16} className="brightness-0 invert" />
-            <Image src="/svg/Signal.svg" alt="Signal" width={16} height={16} className="brightness-0 invert" />
             <Image src="/svg/Battery.svg" alt="Battery" width={16} height={16} className="brightness-0 invert" />
-            <span>85%</span>
-          </div>
-          <div>
-            <span>Jio True5G</span>
           </div>
         </div>
       </div>
 
-      {/* Quick Settings Panel */}
-      <div 
-        className="absolute top-16 left-0 right-0 rounded-t-3xl mx-4 mt-2 p-6 animate-slide-down"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Connectivity Toggles */}
-        <div className="flex gap-3 mb-6">
+        <div 
+          className={`absolute top-16 left-0 right-0 rounded-t-3xl mx-4 mt-2 p-6 transition-all duration-500 ease-out transform ${
+            isVisible 
+              ? 'translate-y-0 opacity-100 scale-100' 
+              : 'translate-y-8 opacity-0 scale-95'
+          }`}
+          onClick={(e) => e.stopPropagation()}
+        >
+        <div className={`flex gap-5 mb-6 transition-all duration-700 delay-100 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
           <ToggleButton
             iconPath="/svg/wifi.svg"
             label="WiFi"
@@ -146,15 +146,15 @@ export default function QuickSettingsPanel({ isVisible, onClose }: QuickSettings
           <ToggleButton
             iconPath="/svg/Signal.svg"
             label="Mobile Data"
-            isActive={toggles.wifi}
-            onClick={() => toggleSetting('wifi')}
+            isActive={toggles.mobileData}
+            onClick={() => toggleSetting('mobileData')}
             isLarge
           />
         </div>
 
-        {/* Media Player and Sliders */}
-        <div className="flex gap-4 mb-6">
-          {/* Media Player */}
+        <div className={`flex gap-6 mb-6 transition-all duration-700 delay-200 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
           <div className="w-32 h-32 bg-gray-800/60 rounded-2xl p-4 flex flex-col justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
@@ -182,57 +182,100 @@ export default function QuickSettingsPanel({ isVisible, onClose }: QuickSettings
           </div>
 
           {/* Sliders */}
-          <div className="flex gap-3 justify-center">
-            {/* Brightness Slider */}
+            <div className="flex gap-4">
             <div className="flex flex-col items-center gap-2">
               <div 
-                className="w-14 h-32 bg-gray-600/60 rounded-2xl relative cursor-pointer border border-gray-500/30 flex items-center justify-center"
-                onClick={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect()
-                  const y = e.clientY - rect.top
-                  const percentage = Math.max(0, Math.min(100, ((rect.height - y) / rect.height) * 100))
-                  setBrightness(Math.round(percentage))
+                className="w-14 h-32 bg-gray-600/60 rounded-2xl relative cursor-pointer border border-gray-500/30 overflow-hidden"
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  const slider = e.currentTarget
+                  const rect = slider.getBoundingClientRect()
+                  
+                  const updateBrightness = (clientY: number) => {
+                    const y = clientY - rect.top
+                    const percentage = Math.max(0, Math.min(100, ((rect.height - y) / rect.height) * 100))
+                    setBrightness(Math.round(percentage))
+                  }
+                  
+                  const handleMouseMove = (e: MouseEvent) => {
+                    e.preventDefault()
+                    requestAnimationFrame(() => updateBrightness(e.clientY))
+                  }
+                  
+                  const handleMouseUp = () => {
+                    document.removeEventListener('mousemove', handleMouseMove)
+                    document.removeEventListener('mouseup', handleMouseUp)
+                  }
+                  
+                  document.addEventListener('mousemove', handleMouseMove, { passive: false })
+                  document.addEventListener('mouseup', handleMouseUp)
+                  
+                  updateBrightness(e.clientY)
                 }}
               >
-                {/* Background track để hiển thị giới hạn */}
                 <div className="absolute inset-0 bg-gray-700/40 rounded-2xl"></div>
-                {/* Fill bar trắng bao phủ toàn bộ */}
                 <div 
-                  className="absolute bottom-0 left-0 right-0 bg-white rounded-2xl transition-all z-10"
-                  style={{ height: `${brightness}%` }}
+                  className="absolute bottom-0 left-0 right-0 bg-white transition-all duration-75 ease-out"
+                  style={{ 
+                    height: `${brightness}%`,
+                    borderRadius: '0 0 0.75rem 0.75rem'
+                  }}
                 />
-                {/* Icon ở dưới trong thanh */}
-                <Image src="/svg/sun.svg" alt="Sun" width={16} height={16} className="brightness-0 invert opacity-60 relative z-20" />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <Sun className="w-4 h-4 text-gray-400" />
+                </div>
               </div>
             </div>
 
-            {/* Volume Slider */}
             <div className="flex flex-col items-center gap-2">
               <div 
-                className="w-14 h-32 bg-gray-600/60 rounded-2xl relative cursor-pointer border border-gray-500/30 flex items-center justify-center"
-                onClick={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect()
-                  const y = e.clientY - rect.top
-                  const percentage = Math.max(0, Math.min(100, ((rect.height - y) / rect.height) * 100))
-                  setVolume(Math.round(percentage))
+                className="w-14 h-32 bg-gray-600/60 rounded-2xl relative cursor-pointer border border-gray-500/30 overflow-hidden"
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  const slider = e.currentTarget
+                  const rect = slider.getBoundingClientRect()
+                  
+                  const updateVolume = (clientY: number) => {
+                    const y = clientY - rect.top
+                    const percentage = Math.max(0, Math.min(100, ((rect.height - y) / rect.height) * 100))
+                    setVolume(Math.round(percentage))
+                  }
+                  
+                  const handleMouseMove = (e: MouseEvent) => {
+                    e.preventDefault()
+                    requestAnimationFrame(() => updateVolume(e.clientY))
+                  }
+                  
+                  const handleMouseUp = () => {
+                    document.removeEventListener('mousemove', handleMouseMove)
+                    document.removeEventListener('mouseup', handleMouseUp)
+                  }
+                  
+                  document.addEventListener('mousemove', handleMouseMove, { passive: false })
+                  document.addEventListener('mouseup', handleMouseUp)
+                  
+                  updateVolume(e.clientY)
                 }}
               >
-                {/* Background track để hiển thị giới hạn */}
                 <div className="absolute inset-0 bg-gray-700/40 rounded-2xl"></div>
-                {/* Fill bar trắng bao phủ toàn bộ */}
                 <div 
-                  className="absolute bottom-0 left-0 right-0 bg-white rounded-2xl transition-all z-10"
-                  style={{ height: `${volume}%` }}
+                  className="absolute bottom-0 left-0 right-0 bg-white transition-all duration-75 ease-out"
+                  style={{ 
+                    height: `${volume}%`,
+                    borderRadius: '0 0 0.75rem 0.75rem'
+                  }}
                 />
-                {/* Icon ở dưới trong thanh */}
-                <Image src="/svg/volume.svg" alt="Volume" width={16} height={16} className="brightness-0 invert opacity-60 relative z-20" />
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <Volume2 className="w-4 h-4 text-gray-400" />
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Quick Toggles Grid */}
-        <div className="grid grid-cols-4 gap-3">
+        <div className={`grid grid-cols-4 gap-3 transition-all duration-700 delay-300 ${
+          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        }`}>
           {/* Row 1 */}
           <ToggleButton iconPath="/svg/bluetooth.svg" label="Bluetooth" isActive={toggles.bluetooth} onClick={() => toggleSetting('bluetooth')} isRounded />
           <ToggleButton iconPath="/svg/plane.svg" label="Airplane" isActive={toggles.airplane} onClick={() => toggleSetting('airplane')} isRounded />
@@ -266,7 +309,6 @@ export default function QuickSettingsPanel({ isVisible, onClose }: QuickSettings
 
       </div>
 
-      {/* Backdrop click to close */}
       <div 
         className="absolute inset-0 -z-10" 
         onClick={onClose}

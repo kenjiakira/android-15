@@ -4,6 +4,7 @@ import { useState, useRef } from "react"
 import Image from "next/image"
 import Apps from "@/components/apps"
 import Dock from "@/components/dock"
+import QuickSettingsPanel from "@/components/quick-settings-panel"
 import { useAppRouter } from "@/hooks/use-app-router"
 import { useAppRegistration } from "@/lib/app-factory"
 import { useGestureManager } from "@/hooks/use-gesture-manager"
@@ -18,6 +19,7 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
   const [selectedApp, setSelectedApp] = useState<string | null>(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isEntering, setIsEntering] = useState(false)
+  const [showQuickSettings, setShowQuickSettings] = useState(false)
   
   useAppRegistration()
   
@@ -70,6 +72,11 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
+      {/* Click area to open quick settings - top right corner from punch hole */}
+      <div 
+        className="absolute top-0 left-1/2 right-0 h-16 z-40 cursor-pointer"
+        onClick={() => setShowQuickSettings(true)}
+      />
       {/* Background Image */}
       <Image
         src="/home-screen.png"
@@ -107,6 +114,12 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
       <AppEnterAnimation currentApp={currentApp} isEntering={isEntering}>
         {renderCurrentApp()}
       </AppEnterAnimation>
+
+      {/* Quick Settings Panel */}
+      <QuickSettingsPanel 
+        isVisible={showQuickSettings}
+        onClose={() => setShowQuickSettings(false)}
+      />
     </div>
   )
 }

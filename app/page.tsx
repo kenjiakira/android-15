@@ -19,7 +19,7 @@ export default function Page() {
         // Fullscreen mode - no phone frame, just the content
         <div className="w-full h-screen bg-background overflow-hidden relative">
           {/* StatusBar - Fixed at top */}
-          <div className="absolute top-0 left-0 right-0 z-50">
+          <div className="absolute top-0 left-0 right-0 z-50 pointer-events-none">
             <StatusBar variant={!isUnlocked ? "dark" : "light"} hideTime={!isUnlocked} />
           </div>
           
@@ -51,7 +51,7 @@ export default function Page() {
             {/* Phone screen */}
             <div className="w-full h-full bg-background overflow-hidden relative">
               {/* StatusBar - Fixed at top */}
-              <div className="absolute top-0 left-0 right-0 z-50">
+              <div className="absolute top-0 left-0 right-0 z-50 pointer-events-none">
                 <StatusBar variant={!isUnlocked ? "dark" : "light"} hideTime={!isUnlocked} />
               </div>
               
