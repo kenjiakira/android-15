@@ -2,8 +2,6 @@
 
 import type React from "react"
 import { useEffect } from "react"
-import { Camera, Flashlight } from "lucide-react"
-import DateTimeHeader from "@/components/datetime-header"
 import DepthEffectWallpaper from "@/components/depth-effect-wallpaper"
 import { useGestureManager } from "@/hooks/use-gesture-manager"
 
@@ -12,6 +10,7 @@ interface LockScreenProps {
 }
 
 export default function LockScreen({ onUnlock }: LockScreenProps) {
+
   const {
     dragY,
     isDragging,
@@ -21,7 +20,6 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-    // Fingerprint unlock
     isFingerprintPressed,
     showWaveAnimation,
     waveProgress,
@@ -75,39 +73,6 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
           ></div>
         </div>
       )}
-
-      {/* Content */}
-      <div className="relative z-30 h-full flex flex-col items-center justify-between py-6 px-6 pt-20">
-
-        {/* Time and date header - hidden since DepthEffectWallpaper handles this */}
-        <div className="invisible">
-          <DateTimeHeader variant="dark" />
-        </div>
-
-        {/* Unlock hint and camera */}
-        <div className="flex flex-col items-center gap-8 pb-8 w-full">
-          <div className="flex flex-col items-center gap-3">
-            <div className="text-white/70 text-sm font-medium tracking-wide font-mi-sans">
-              {dragY > 0 ? "Keep dragging up..." : "Swiper up to open!"}
-            </div>
-
-          </div>
-
-          {/* Flash button - left side */}
-          <div className="absolute bottom-8 left-6">
-            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-all border border-white/30">
-              <Flashlight size={20} strokeWidth={2} className="text-white/80" />
-            </div>
-          </div>
-
-          {/* Camera button - right side */}
-          <div className="absolute bottom-8 right-6">
-            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-all border border-white/30">
-              <Camera size={20} strokeWidth={2} className="text-white/80" />
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

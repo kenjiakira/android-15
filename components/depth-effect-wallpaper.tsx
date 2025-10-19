@@ -2,7 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect, useRef } from "react"
-import { Camera, Flashlight } from "lucide-react"
+import { Camera, Maximize2 } from "lucide-react"
+import { useFullscreen } from "@/components/fullscreen-context"
 // import { FontManager, FONTS } from "@/lib/font-manager"
 
 interface DepthEffectWallpaperProps {
@@ -23,6 +24,7 @@ export default function DepthEffectWallpaper({
   handleFingerprintRelease
 }: DepthEffectWallpaperProps) {
   const [currentTime, setCurrentTime] = useState(new Date())
+  const { toggleFullscreen } = useFullscreen()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -146,11 +148,14 @@ export default function DepthEffectWallpaper({
         />
       </div>
 
-      {/* Flash and Camera buttons */}
+      {/* Fullscreen and Camera buttons */}
       <div className="absolute bottom-8 left-6 z-30">
-        <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-all border border-white/30 cursor-pointer">
-          <Flashlight size={20} strokeWidth={2} className="text-white/80" />
-        </div>
+        <button 
+          onClick={toggleFullscreen}
+          className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-all border border-white/30 cursor-pointer"
+        >
+          <Maximize2 size={20} strokeWidth={2} className="text-white/80" />
+        </button>
       </div>
 
       <div className="absolute bottom-8 right-6 z-30">

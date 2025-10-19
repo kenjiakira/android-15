@@ -10,7 +10,7 @@ interface StatusIconsProps {
 
 export default function StatusIcons({ variant = "dark" }: StatusIconsProps) {
   return (
-    <div className="flex gap-1.5 text-sm pointer-events-none select-none">
+    <div className="flex gap-1 text-sm pointer-events-none select-none">
       <SignalIndicator variant={variant} />
       <WifiIndicator variant={variant} />
       <BatteryIndicator variant={variant} />

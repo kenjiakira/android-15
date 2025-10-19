@@ -34,7 +34,7 @@ export default function SignalIndicator({ variant = "dark", animated = true }: S
           y={15 - i * 2.5}
           width="2.5"
           height={i * 2.5}
-          fill={variant === "light" ? "#ffffff" : "#000000"}
+          fill="#ffffff"
           opacity={i <= signalStrength ? 1 : 0.2}
         />
       )
