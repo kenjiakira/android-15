@@ -116,7 +116,7 @@ export function useGestureManager({
     const startTime = Date.now()
     progressTimerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime
-      const progress = Math.min(elapsed / 2000, 1) // 2 seconds
+      const progress = Math.min(elapsed / 1500, 1) 
       setWaveProgress(progress)
     }, 16) // ~60fps
     
