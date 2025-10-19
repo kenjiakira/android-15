@@ -236,30 +236,24 @@ export default function FacebookScreen({ onBack }: FacebookScreenProps) {
           <div className="flex items-center justify-around">
             <button className={`flex flex-col items-center py-2 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'}`}>
               <Home size={20} />
-              <span className="text-xs mt-1">Home</span>
             </button>
             <button className={`flex flex-col items-center py-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <Users size={20} />
-              <span className="text-xs mt-1">Friends</span>
             </button>
             <button className={`flex flex-col items-center py-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <MessageCircle size={20} />
-              <span className="text-xs mt-1">Messenger</span>
             </button>
             <button className={`flex flex-col items-center py-2 relative ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <Bell size={20} />
               <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
                 <span className="text-white text-xs font-bold">3</span>
               </div>
-              <span className="text-xs mt-1">Notifications</span>
             </button>
             <button className={`flex flex-col items-center py-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <Video size={20} />
-              <span className="text-xs mt-1">Videos</span>
             </button>
             <button className={`flex flex-col items-center py-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <ShoppingBag size={20} />
-              <span className="text-xs mt-1">Marketplace</span>
             </button>
           </div>
         </div>
