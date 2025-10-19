@@ -5,6 +5,8 @@ import { useState, useRef, useCallback } from "react"
 interface UseGestureManagerOptions {
   onUnlock: () => void
   threshold?: number
+  exitZoneHeight?: number
+  isLockScreen?: boolean
 }
 
 interface UseGestureManagerReturn {
@@ -20,17 +22,28 @@ interface UseGestureManagerReturn {
 
 export function useGestureManager({ 
   onUnlock, 
-  threshold = 60 
+  threshold = 60,
+  exitZoneHeight = 200,
+  isLockScreen = false
 }: UseGestureManagerOptions): UseGestureManagerReturn {
   const [dragY, setDragY] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const startYRef = useRef(0)
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    const startY = e.touches[0].clientY
+    const windowHeight = window.innerHeight
+    
+    if (!isLockScreen && startY < windowHeight - exitZoneHeight) {
+      // console.log(`Touch start outside exit zone: startY=${startY}, windowHeight=${windowHeight}, exitZoneHeight=${exitZoneHeight}`)
+      return
+    }
+    
+    // console.log(`Touch start in exit zone: startY=${startY}, windowHeight=${windowHeight}, exitZoneHeight=${exitZoneHeight}`)
     setIsDragging(true)
-    startYRef.current = e.touches[0].clientY
+    startYRef.current = startY
     setDragY(0)
-  }, [])
+  }, [exitZoneHeight, isLockScreen])
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging) return
@@ -40,7 +53,9 @@ export function useGestureManager({
   }, [isDragging])
 
   const handleTouchEnd = useCallback(() => {
+    console.log(`Touch end: dragY=${dragY}, threshold=${threshold}`)
     if (dragY > threshold) {
+      console.log('Triggering unlock')
       onUnlock()
     }
     setIsDragging(false)
@@ -48,10 +63,17 @@ export function useGestureManager({
   }, [dragY, threshold, onUnlock])
 
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    const startY = e.clientY
+    const windowHeight = window.innerHeight
+
+    if (!isLockScreen && startY < windowHeight - exitZoneHeight) {
+      return
+    }
+    
     setIsDragging(true)
-    startYRef.current = e.clientY
+    startYRef.current = startY
     setDragY(0)
-  }, [])
+  }, [exitZoneHeight, isLockScreen])
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (!isDragging) return

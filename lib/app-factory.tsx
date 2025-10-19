@@ -16,6 +16,8 @@ import GoogleMapsScreen from "@/components/apps/google-maps-screen"
 import MiHomeScreen from "@/components/apps/mi-home-screen"
 import YouTubeScreen from "@/components/apps/youtube-screen"
 import FacebookScreen from "@/components/apps/facebook-screen"
+import ZaloScreen from "@/components/apps/zalo-screen"
+import GooglePhotosScreen from "@/components/apps/google-photos-screen"
 
 export function registerAppComponents() {
   const appRouter = AppRouter.getInstance()
@@ -34,6 +36,8 @@ export function registerAppComponents() {
   appRouter.registerApp("mi-home", MiHomeScreen)
   appRouter.registerApp("youtube", YouTubeScreen)
   appRouter.registerApp("facebook", FacebookScreen)
+  appRouter.registerApp("zalo", ZaloScreen)
+  appRouter.registerApp("google-photo", GooglePhotosScreen)
 }
 
 export function useAppRegistration() {

@@ -20,7 +20,7 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-  } = useGestureManager({ onUnlock })
+  } = useGestureManager({ onUnlock, isLockScreen: true })
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
