@@ -124,13 +124,7 @@ export default function GooglePhotosScreen({ onBack }: GooglePhotosScreenProps) 
       console.log("Searching for:", searchQuery)
     }
   }
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      handleSearch()
-    }
-  }
-
+  
   const toggleFavorite = (photoId: string) => {
     setPhotos(prev => prev.map(photo => 
       photo.id === photoId ? { ...photo, isFavorite: !photo.isFavorite } : photo

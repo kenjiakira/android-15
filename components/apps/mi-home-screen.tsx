@@ -166,28 +166,12 @@ export default function MiHomeScreen({ onBack }: MiHomeScreenProps) {
     ? devices 
     : devices.filter(device => device.room.toLowerCase().replace(" ", "") === activeRoom)
 
-  const handleDeviceToggle = (deviceId: string) => {
-    // Simulate device toggle
-    console.log(`Toggling device ${deviceId}`)
-  }
-
-  const handleScenario = (scenarioId: string) => {
-    // Simulate scenario execution
-    console.log(`Executing scenario ${scenarioId}`)
-  }
-
   return (
     <AppScreen onBack={onBack} variant={isDarkMode ? "dark" : "light"} hideDefaultHeader={true} allowContentScroll={false} noPadding={true}>
       <div className={`flex flex-col h-full ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
         {/* Header */}
         <div className={`px-4 py-3 flex items-center justify-between ${isDarkMode ? 'bg-gray-900' : 'bg-white'} border-b ${isDarkMode ? 'border-gray-800' : 'border-gray-200'}`}>
           <div className="flex items-center">
-            <button 
-              onClick={onBack}
-              className={`p-2 rounded-full ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
-            >
-              <ChevronLeft size={20} />
-            </button>
              <DropdownMenu.Root>
                <DropdownMenu.Trigger asChild>
                  <button className={`ml-2 flex items-center space-x-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -294,8 +278,7 @@ export default function MiHomeScreen({ onBack }: MiHomeScreenProps) {
           <div className="flex space-x-3">
             {scenarios.map(scenario => (
               <button
-                key={scenario.id}
-                onClick={() => handleScenario(scenario.id)}
+                key={scenario.id}   
                 className={`flex-1 p-4 rounded-lg ${isDarkMode ? 'bg-gray-800' : 'bg-white'} border ${isDarkMode ? 'border-gray-700' : 'border-gray-200'} hover:${isDarkMode ? 'bg-gray-700' : 'bg-gray-50'}`}
               >
                 <div className="flex flex-col items-center space-y-2">

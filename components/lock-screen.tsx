@@ -4,6 +4,7 @@ import type React from "react"
 import { useEffect } from "react"
 import { Camera, Flashlight } from "lucide-react"
 import DateTimeHeader from "@/components/datetime-header"
+import DepthEffectWallpaper from "@/components/depth-effect-wallpaper"
 import { useGestureManager } from "@/hooks/use-gesture-manager"
 
 interface LockScreenProps {
@@ -46,17 +47,11 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-red-600 via-red-500 to-red-700">
-        <img
-          src="/beautiful-woman-portrait-red-aesthetic-modern-styl.jpg"
-          alt="Lock screen background"
-          className="w-full h-full object-cover opacity-90"
-        />
-      </div>
+      {/* Depth Effect Wallpaper */}
+      <DepthEffectWallpaper className="absolute inset-0" />
 
-      {/* Overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"></div>
+      {/* Overlay gradient for better text readability */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/20 z-5"></div>
 
       {/* Drag indicator overlay */}
       {isDragging && dragY > 0 && (
@@ -69,10 +64,12 @@ export default function LockScreen({ onUnlock }: LockScreenProps) {
       )}
 
       {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-between py-6 px-6 pt-20">
+      <div className="relative z-30 h-full flex flex-col items-center justify-between py-6 px-6 pt-20">
 
-        {/* Time and date header */}
-        <DateTimeHeader variant="dark" />
+        {/* Time and date header - hidden since DepthEffectWallpaper handles this */}
+        <div className="invisible">
+          <DateTimeHeader variant="dark" />
+        </div>
 
         {/* Unlock hint and camera */}
         <div className="flex flex-col items-center gap-8 pb-8 w-full">
