@@ -3,7 +3,10 @@
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { useTime } from "@/components/time-provider"
-import GoogleSearchWidget from "@/components/google-search-widget"
+import GoogleSearchWidget from "@/components/widgets/google-search-widget"
+import PersonalPhotoWidget from "@/components/widgets/photo-widget"
+import SystemToolsWidget from "@/components/widgets/system-tools-widget"
+import DateTimeWidget from "@/components/widgets/date-time-widget"
 
 interface App {
   id: string
@@ -29,14 +32,16 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
   const getAvailableSlotsOnFirstPage = () => {
     const hasTimeWidget = true  
     const hasSearchWidget = true  
+    const hasPersonalWidget = true
+    const hasSystemWidget = true
     const hasPageIndicators = true  
     
     let usedSlots = 0
     
     if (hasTimeWidget) usedSlots += 8
-    
     if (hasSearchWidget) usedSlots += 4
-    
+    if (hasPersonalWidget) usedSlots += 4
+    if (hasSystemWidget) usedSlots += 4    
     if (hasPageIndicators) usedSlots += 0 
     
     const availableSlots = DEFAULT_APPS_PER_PAGE - usedSlots
@@ -92,15 +97,11 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
           
           return (
             <div key={pageIndex} className="w-full flex-shrink-0 snap-center px-4">
-              {/* Header with date and time - only show on first page */}
+              {/* Widgets - only show on first page */}
               {pageIndex === 0 && (
-                <div className="mb-6 animate-slide-up">
-                  <p className="text-xs text-white/70 font-medium font-mi-sans">{date}</p>
-                  <h1
-                    className="text-5xl font-black text-white mt-1 font-mi-sans"
-                  >
-                    {time}
-                  </h1>
+                <div className="mb-6">
+                  {/* Date Time Widget */}
+                  <DateTimeWidget className="mb-6" />
                   
                   {/* Google Search Widget */}
                   <GoogleSearchWidget 
@@ -109,6 +110,16 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
                     onLensSearch={() => console.log('Lens search')}
                     onNavigateToGoogle={() => onAppSelect('google')}
                   />
+                  
+                  {/* Personal Photo and System Tools Widgets */}
+                  <div className="grid grid-cols-2 gap-3 mt-6 mb-6">
+                    <PersonalPhotoWidget 
+                      onTap={() => onAppSelect('gallery')}
+                    />
+                    <SystemToolsWidget
+                      onAppSelect={onAppSelect}
+                    />
+                  </div>
                 </div>
               )}
               

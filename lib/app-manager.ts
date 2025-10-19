@@ -26,6 +26,13 @@ export const appRegistry: AppRegistry = {
     color: "from-slate-400 to-slate-600",
     category: "system"
   },
+  'file-explore': {
+    id: 'file-explore',
+    name: 'File Explore',
+    image: '/file-explore.png',
+    color: 'from-slate-400 to-slate-600',
+    category: 'system'
+  },
   music: {
     id: "music",
     name: "Music",
@@ -81,6 +88,20 @@ export const appRegistry: AppRegistry = {
     image: "/radio.png",
     color: "from-amber-400 to-amber-600",
     category: "system"
+  },
+  calculator: {
+    id: "calculator",
+    name: "Calculator",
+    image: "/calculator.png",
+    color: "from-green-400 to-green-600",
+    category: "system"
+  },
+  'mi-get-apps': {
+    id: 'mi-get-apps',
+    name: 'Mi Get Apps',
+    image: '/mi-get-apps.png',
+    color: 'from-slate-400 to-slate-600',
+    category: 'system'
   },
 
   // Xiaomi Apps
