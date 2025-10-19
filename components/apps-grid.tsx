@@ -129,8 +129,10 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
                   <button
                     key={app.id}
                     onClick={() => onAppSelect(app.id)}
-                    className="animate-slide-up active:scale-90 transition-transform"
+                    className="animate-slide-up active:scale-90 transition-transform cursor-pointer"
                     style={{ animationDelay: `${0.02 * index}s` }}
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
                   >
                     <div className="flex flex-col items-center gap-2">
                       <div

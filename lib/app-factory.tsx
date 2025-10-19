@@ -18,6 +18,7 @@ import YouTubeScreen from "@/components/apps/youtube-screen"
 import FacebookScreen from "@/components/apps/facebook-screen"
 import ZaloScreen from "@/components/apps/zalo-screen"
 import GooglePhotosScreen from "@/components/apps/google-photos-screen"
+import KeyboardScreen from "@/components/apps/keyboard-screen"
 
 export function registerAppComponents() {
   const appRouter = AppRouter.getInstance()
@@ -38,6 +39,7 @@ export function registerAppComponents() {
   appRouter.registerApp("facebook", FacebookScreen)
   appRouter.registerApp("zalo", ZaloScreen)
   appRouter.registerApp("google-photo", GooglePhotosScreen)
+  appRouter.registerApp("keyboard", KeyboardScreen)
 }
 
 export function useAppRegistration() {

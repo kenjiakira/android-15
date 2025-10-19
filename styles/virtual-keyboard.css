@@ -1,0 +1,282 @@
+/* Virtual Keyboard Styles */
+.virtual-keyboard {
+  width: 100%;
+  max-width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  height: 100%;
+}
+
+.keyboard-container {
+  direction: ltr;
+}
+
+/* Main keyboard theme */
+.keyboard-container .hg-theme-default {
+  background: #2D2D2D;
+  border-radius: 0;
+  padding: 12px 10px 55px 10px;
+  box-shadow: none;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Individual keys */
+.keyboard-container .hg-theme-default .hg-button {
+  background: #4A4A4A;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 400;
+  height: 40px;
+  margin: 2px;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-shadow: none;
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Key hover state */
+.keyboard-container .hg-theme-default .hg-button:hover {
+  background: #5A5A5A;
+  transform: translateY(-1px);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Key active/pressed state */
+.keyboard-container .hg-theme-default .hg-button:active,
+.keyboard-container .hg-theme-default .hg-button.hg-selectedButton {
+  background: #3A3A3A;
+  transform: translateY(0);
+  box-shadow: 
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Key rows */
+.keyboard-container .hg-theme-default .hg-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.keyboard-container .hg-theme-default .hg-row:last-child {
+  margin-bottom: 0;
+}
+
+/* Staggered keyboard layout */
+.keyboard-container .hg-theme-default .hg-row:nth-child(2) {
+  margin-left: 15px; /* Second row offset */
+  margin-right: 5%;
+}
+
+/* Special keys styling - subtle accent colors */
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{shift}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 7-7 7'/%3E%3Cpath d='M5 10h14'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+  color: transparent;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{shift}"]:hover {
+  background: #6A6A6A;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 7-7 7'/%3E%3Cpath d='M5 10h14'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{backspace}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z'/%3E%3Cpath d='M18 9l-6 6'/%3E%3Cpath d='M12 9l6 6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+  color: transparent;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{backspace}"]:hover {
+  background: #6A6A6A;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z'/%3E%3Cpath d='M18 9l-6 6'/%3E%3Cpath d='M12 9l6 6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{space}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{space}"]:hover {
+  background: #6A6A6A;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{enter}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+  width: auto !important;
+  min-width: unset !important;
+  flex: 0 0 auto !important;
+  max-width: 60px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+  color: transparent;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{enter}"]:hover {
+  background: #6A6A6A;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{numbers}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+  width: auto !important;
+  min-width: unset !important;
+  flex: 0 0 auto !important;
+  max-width: 50px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{numbers}"]:hover {
+  background: #6A6A6A;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{abc}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{abc}"]:hover {
+  background: #6A6A6A;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{vietnamese}"] {
+  background: #4A4A4A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  width: auto !important;
+  min-width: unset !important;
+  flex: 0 0 auto !important;
+  max-width: 50px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{vietnamese}"]:hover {
+  background: #5A5A5A;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{english}"] {
+  background: #4A4A4A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.1);
+  font-weight: 500;
+  width: auto !important;
+  min-width: unset !important;
+  flex: 0 0 auto !important;
+  max-width: 50px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{english}"]:hover {
+  background: #5A5A5A;
+}
+
+/* Make period button smaller like language buttons */
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="."] {
+  width: 40px !important;
+  min-width: 40px !important;
+  flex: 0 0 40px !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .keyboard-container .hg-theme-default .hg-button {
+    font-size: 14px;
+    height: 44px;
+    margin: 1px;
+  }
+  
+  .keyboard-container .hg-theme-default {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .keyboard-container .hg-theme-default .hg-button {
+    font-size: 12px;
+    height: 40px;
+    margin: 1px;
+  }
+  
+  .keyboard-container .hg-theme-default {
+    padding: 6px;
+  }
+}
+
+
+/* Animation for key press feedback */
+@keyframes keyPress {
+  0% {
+    transform: translateY(-1px) scale(1);
+  }
+  50% {
+    transform: translateY(1px) scale(0.98);
+  }
+  100% {
+    transform: translateY(-1px) scale(1);
+  }
+}
+
+.keyboard-container .hg-theme-default .hg-button.hg-activeButton {
+  animation: keyPress 0.15s ease-out;
+}
+
+/* Focus styles for accessibility */
+.keyboard-container .hg-theme-default .hg-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .keyboard-container .hg-theme-default .hg-button {
+    border-width: 2px;
+    border-color: #000000;
+  }
+  
+  .keyboard-container .hg-theme-default .hg-button:hover {
+    border-color: #333333;
+  }
+}

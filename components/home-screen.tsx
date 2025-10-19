@@ -62,7 +62,7 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
 
   return (
     <div 
-      className="w-full h-full overflow-hidden font-system flex flex-col select-none relative cursor-grab active:cursor-grabbing"
+      className="w-full h-full overflow-hidden font-system flex flex-col select-none relative cursor-default"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}

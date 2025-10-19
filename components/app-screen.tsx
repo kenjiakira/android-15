@@ -4,7 +4,6 @@ import { ReactNode } from "react"
 import StatusBar from "@/components/status-bar"
 import NavigationBar from "@/components/navigation-bar"
 import PunchHoleCamera from "@/components/punch-hole-camera"
-import { KeyboardProvider } from "./keyboard-provider"
 
 interface AppScreenProps {
   onBack: () => void
@@ -57,7 +56,6 @@ export default function AppScreen({
   }
 
   return (
-    <KeyboardProvider>
       <div className={`w-full h-full ${bgColor} ${textColor} overflow-hidden font-system flex flex-col select-none min-w-0 relative`}>
         {/* Punch Hole Camera */}
         <PunchHoleCamera />
@@ -113,6 +111,5 @@ export default function AppScreen({
           <NavigationBar variant={isLight ? "dark" : "light"} />
         )}
       </div>
-    </KeyboardProvider>
   )
 }
