@@ -15,7 +15,7 @@
 .keyboard-container .hg-theme-default {
   background: #2D2D2D;
   border-radius: 0;
-  padding: 12px 10px 55px 10px;
+  padding: 8px 8px 56px 8px; /* push keyboard up from bottom */
   box-shadow: none;
   border: none;
   width: 100%;
@@ -30,12 +30,10 @@
   color: #FFFFFF;
   font-size: 16px;
   font-weight: 400;
-  height: 40px;
+  height: 35px; /* slightly reduced key height */
   margin: 2px;
-  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: none;
+  box-shadow: none;
   text-shadow: none;
   user-select: none;
   cursor: pointer;
@@ -44,10 +42,8 @@
 /* Key hover state */
 .keyboard-container .hg-theme-default .hg-button:hover {
   background: #5A5A5A;
-  transform: translateY(-1px);
-  box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transform: none;
+  box-shadow: none;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -55,10 +51,8 @@
 .keyboard-container .hg-theme-default .hg-button:active,
 .keyboard-container .hg-theme-default .hg-button.hg-selectedButton {
   background: #3A3A3A;
-  transform: translateY(0);
-  box-shadow: 
-    0 1px 2px rgba(0, 0, 0, 0.4),
-    inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: none;
+  box-shadow: none;
   border-color: rgba(255, 255, 255, 0.05);
 }
 
@@ -87,19 +81,52 @@
   color: white;
   border-color: rgba(255, 255, 255, 0.15);
   font-weight: 500;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 7-7 7'/%3E%3Cpath d='M5 10h14'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px 16px;
+  /* Remove direct background image to avoid filtering whole button */
+  background-image: none;
+  position: relative;
   color: transparent;
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{shift}"]:hover {
   background: #6A6A6A;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l7 7-7 7'/%3E%3Cpath d='M5 10h14'/%3E%3C/svg%3E");
+}
+
+/* Render the icon as a pseudo-element so only the icon is brightened */
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{shift}"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  background-image: url('/svg/shift-1.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 16px 16px;
+  background-size: contain;
+  pointer-events: none;
+  /* Brighten dark SVG icon only */
+  filter: invert(1) brightness(1.6) contrast(1.1);
+}
+
+/* Caps lock visual state on shift */
+.keyboard-container .hg-theme-default .hg-button.shift-lock[data-skbtn="{shift}"] {
+  background: #7A7A7A;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.15);
+}
+
+/* Single-use shift visual state */
+.keyboard-container .hg-theme-default .hg-button.shift-single[data-skbtn="{shift}"] {
+  background: #6A6A6A;
+}
+
+/* Swap the icon per state via pseudo-element */
+.keyboard-container .hg-theme-default .hg-button.shift-single[data-skbtn="{shift}"]::after {
+  background-image: url('/svg/shift-2.svg');
+}
+.keyboard-container .hg-theme-default .hg-button.shift-lock[data-skbtn="{shift}"]::after {
+  background-image: url('/svg/shift-3.svg');
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{backspace}"] {
@@ -107,19 +134,33 @@
   color: white;
   border-color: rgba(255, 255, 255, 0.15);
   font-weight: 500;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z'/%3E%3Cpath d='M18 9l-6 6'/%3E%3Cpath d='M12 9l6 6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px 16px;
+  background-image: none;
+  position: relative;
   color: transparent;
+  width: auto !important;
+  min-width: 50px !important;
+  max-width: 80px !important;
+  flex: 0 0 auto !important;
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{backspace}"]:hover {
   background: #6A6A6A;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z'/%3E%3Cpath d='M18 9l-6 6'/%3E%3Cpath d='M12 9l6 6'/%3E%3C/svg%3E");
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{backspace}"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  background-image: url('/svg/backspace.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 16px 16px;
+  background-size: contain;
+  pointer-events: none;
+  filter: invert(1) brightness(1.6) contrast(1.1);
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{space}"] {
@@ -142,19 +183,29 @@
   min-width: unset !important;
   flex: 0 0 auto !important;
   max-width: 60px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 16px 16px;
+  background-image: none;
+  position: relative;
   color: transparent;
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{enter}"]:hover {
   background: #6A6A6A;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{enter}"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  background-image: url('/svg/enter.svg');
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 16px 16px;
+  background-size: contain;
+  pointer-events: none;
+  filter: invert(1) brightness(1.6) contrast(1.1);
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{numbers}"] {
@@ -177,6 +228,25 @@
   color: white;
   border-color: rgba(255, 255, 255, 0.15);
   font-weight: 500;
+  width: 60px !important;
+  min-width: 60px !important;
+  flex: 0 0 60px !important;
+}
+
+/* Symbols key style similar to numbers */
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{symbols}"] {
+  background: #5A5A5A;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+  width: auto !important;
+  min-width: unset !important;
+  flex: 0 0 auto !important;
+  max-width: 50px;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{symbols}"]:hover {
+  background: #6A6A6A;
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{abc}"]:hover {
@@ -192,10 +262,29 @@
   min-width: unset !important;
   flex: 0 0 auto !important;
   max-width: 50px;
+  background-image: none;
+  position: relative;
+  color: transparent;
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{vietnamese}"]:hover {
   background: #5A5A5A;
+}
+
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{vietnamese}"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  background-image: url('/svg/earth.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  filter: invert(1) brightness(1.6) contrast(1.1);
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{english}"] {
@@ -207,14 +296,40 @@
   min-width: unset !important;
   flex: 0 0 auto !important;
   max-width: 50px;
+  background-image: none;
+  position: relative;
+  color: transparent;
 }
 
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="{english}"]:hover {
   background: #5A5A5A;
 }
 
+.keyboard-container .hg-theme-default .hg-button[data-skbtn="{english}"]::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 18px;
+  height: 18px;
+  transform: translate(-50%, -50%);
+  background-image: url('/svg/earth.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+  filter: invert(1) brightness(1.6) contrast(1.1);
+}
+
 /* Make period button smaller like language buttons */
 .keyboard-container .hg-theme-default .hg-button[data-skbtn="."] {
+  width: 40px !important;
+  min-width: 40px !important;
+  flex: 0 0 40px !important;
+}
+
+/* Make comma button small like period */
+.keyboard-container .hg-theme-default .hg-button[data-skbtn=","] {
   width: 40px !important;
   min-width: 40px !important;
   flex: 0 0 40px !important;
@@ -229,7 +344,7 @@
   }
   
   .keyboard-container .hg-theme-default {
-    padding: 8px;
+    padding: 8px 8px 56px 8px; /* keep bottom space on small screens */
   }
 }
 
@@ -241,26 +356,15 @@
   }
   
   .keyboard-container .hg-theme-default {
-    padding: 6px;
+    padding: 6px 6px 48px 6px; /* keep bottom space on very small screens */
   }
 }
 
 
 /* Animation for key press feedback */
-@keyframes keyPress {
-  0% {
-    transform: translateY(-1px) scale(1);
-  }
-  50% {
-    transform: translateY(1px) scale(0.98);
-  }
-  100% {
-    transform: translateY(-1px) scale(1);
-  }
-}
-
+/* Remove key press animation for performance */
 .keyboard-container .hg-theme-default .hg-button.hg-activeButton {
-  animation: keyPress 0.15s ease-out;
+  animation: none;
 }
 
 /* Focus styles for accessibility */

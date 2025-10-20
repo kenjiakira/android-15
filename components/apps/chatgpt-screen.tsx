@@ -252,7 +252,7 @@ export default function ChatGPTScreen({ onBack }: ChatGPTScreenProps) {
                         transition={{ duration: 0.6, repeat: Infinity, delay: 0.1 }}
                       />
                       <motion.div 
-                        className="w-1 h-1 bg-gray-400 rounded-full"
+                        className="w-1 h-1   bg-gray-400 rounded-full"
                         animate={{ y: [-4, 4, -4] }}
                         transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
                       />

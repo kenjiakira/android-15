@@ -31,13 +31,22 @@ export function DragFeedbackAnimation({ currentApp, isDragging, dragY }: DragFee
 interface AppExitAnimationProps {
   isTransitioning: boolean
   children: React.ReactNode
+  onExited?: () => void
 }
 
-export function AppExitAnimation({ isTransitioning, children }: AppExitAnimationProps) {
+export function AppExitAnimation({ isTransitioning, children, onExited }: AppExitAnimationProps) {
+  const handleTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (!isTransitioning) return
+    if (e.target !== e.currentTarget) return
+    onExited?.()
+  }
   return (
-    <div className={`flex-1 overflow-hidden relative z-20 transition-all duration-300 ${
-      isTransitioning ? 'scale-95 opacity-90' : 'scale-100 opacity-100'
-    }`}>
+    <div 
+      className={`flex-1 overflow-hidden relative z-20 transition-all duration-300 ${
+        isTransitioning ? 'scale-95 opacity-90' : 'scale-100 opacity-100'
+      }`}
+      onTransitionEnd={handleTransitionEnd}
+    >
       {children}
     </div>
   )
@@ -47,16 +56,29 @@ export function AppExitAnimation({ isTransitioning, children }: AppExitAnimation
 interface AppEnterAnimationProps {
   currentApp: string | null
   isEntering: boolean
+  isExiting?: boolean
+  onExited?: () => void
   children: React.ReactNode
 }
 
-export function AppEnterAnimation({ currentApp, isEntering, children }: AppEnterAnimationProps) {
+export function AppEnterAnimation({ currentApp, isEntering, isExiting = false, onExited, children }: AppEnterAnimationProps) {
   if (!currentApp) return null
 
+  const handleTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (!isExiting) return
+    if (e.target !== e.currentTarget) return
+    onExited?.()
+  }
+
+  const stateClass = isExiting
+    ? 'scale-90 opacity-0'
+    : (isEntering ? 'scale-90 opacity-0' : 'scale-100 opacity-100')
+
   return (
-    <div className={`absolute inset-0 z-50 transition-all duration-300 ${
-      isEntering ? 'scale-90 opacity-0' : 'scale-100 opacity-100'
-    }`}>
+    <div 
+      className={`absolute inset-0 z-50 transition-all duration-300 ${stateClass}`}
+      onTransitionEnd={handleTransitionEnd}
+    >
       {children}
     </div>
   )

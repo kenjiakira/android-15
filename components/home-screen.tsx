@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import Apps from "@/components/apps"
 import Dock from "@/components/dock"
@@ -19,11 +19,42 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
   const [selectedApp, setSelectedApp] = useState<string | null>(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [isEntering, setIsEntering] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
   const [showQuickSettings, setShowQuickSettings] = useState(false)
+  const [currentWallpaper, setCurrentWallpaper] = useState<string>('/home-screen.png')
   
   useAppRegistration()
   
   const { currentApp, navigateToApp, renderCurrentApp, isAppOpen, goBack } = useAppRouter()
+  
+  useEffect(() => {
+    const savedWallpaper = localStorage.getItem('homeWallpaper')
+    if (savedWallpaper) {
+      try {
+        const wallpaper = JSON.parse(savedWallpaper)
+        setCurrentWallpaper(wallpaper.fullImage)
+      } catch (error) {
+        console.error('Error loading saved wallpaper:', error)
+      }
+    }
+  }, [])
+  
+  useEffect(() => {
+    const handleWallpaperChange = () => {
+      const savedWallpaper = localStorage.getItem('homeWallpaper')
+      if (savedWallpaper) {
+        try {
+          const wallpaper = JSON.parse(savedWallpaper)
+          setCurrentWallpaper(wallpaper.fullImage)
+        } catch (error) {
+          console.error('Error loading saved wallpaper:', error)
+        }
+      }
+    }
+    
+    window.addEventListener('wallpaperChanged', handleWallpaperChange)
+    return () => window.removeEventListener('wallpaperChanged', handleWallpaperChange)
+  }, [])
   
   const {
     dragY,
@@ -37,11 +68,9 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
   } = useGestureManager({ 
     onUnlock: () => {
       if (currentApp) {
+        // Start both background shrink and foreground exit
         setIsTransitioning(true)
-        setTimeout(() => {
-          goBack()
-          setIsTransitioning(false)
-        }, 300)
+        setIsExiting(true)
       }
     }, 
     threshold: 30 
@@ -79,7 +108,7 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
       />
       {/* Background Image */}
       <Image
-        src="/home-screen.png"
+        src={currentWallpaper}
         alt="Home Screen Background"
         fill
         className={`object-cover z-0 transition-all duration-300 ${
@@ -96,7 +125,29 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
         dragY={dragY}
       />
 
-      <AppExitAnimation isTransitioning={isTransitioning}>
+      {/* Bottom gesture capture overlay to ensure exit works over clickable elements */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-50"
+        style={{ height: '200px' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={handleTouchEnd}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+      />
+
+      <AppExitAnimation 
+        isTransitioning={isTransitioning}
+        onExited={() => {
+          if (currentApp) {
+            goBack()
+            setIsTransitioning(false)
+          }
+        }}
+      >
         <div className="h-full px-4 pt-12 pb-32">
           {/* Apps Component */}
           <Apps onAppSelect={handleAppSelect} />
@@ -111,7 +162,17 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
       </div>
 
       {/* Dynamic App Rendering */}
-      <AppEnterAnimation currentApp={currentApp} isEntering={isEntering}>
+      <AppEnterAnimation 
+        currentApp={currentApp} 
+        isEntering={isEntering}
+        isExiting={isExiting}
+        onExited={() => {
+          if (!isExiting) return
+          setIsExiting(false)
+          goBack()
+          setIsTransitioning(false)
+        }}
+      >
         {renderCurrentApp()}
       </AppEnterAnimation>
 

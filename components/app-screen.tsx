@@ -1,9 +1,6 @@
 "use client"
 
 import { ReactNode } from "react"
-import StatusBar from "@/components/status-bar"
-import NavigationBar from "@/components/navigation-bar"
-import PunchHoleCamera from "@/components/punch-hole-camera"
 
 interface AppScreenProps {
   onBack: () => void
@@ -47,25 +44,14 @@ export default function AppScreen({
 
   if (fullScreen) {
     return (
-      <div className="w-full h-full relative overflow-hidden">
-        {/* Punch Hole Camera */}
-        <PunchHoleCamera />
+      <div className={`w-full h-full relative overflow-hidden ${!hideStatusBar ? 'pt-8' : ''}`}>
         {children}
       </div>
     )
   }
 
   return (
-      <div className={`w-full h-full ${bgColor} ${textColor} overflow-hidden font-system flex flex-col select-none min-w-0 relative`}>
-        {/* Punch Hole Camera */}
-        <PunchHoleCamera />
-        
-        {/* Status Bar */}
-        {!hideStatusBar && (
-          <div className="sticky top-0 z-50 bg-gradient-to-b from-black/40 to-transparent">
-            <StatusBar variant={isLight ? "dark" : "light"} />
-          </div>
-        )}
+      <div className={`w-full h-full ${bgColor} ${textColor} overflow-hidden font-system flex flex-col select-none min-w-0 relative ${!hideStatusBar ? 'pt-8' : ''}`}>
 
         {/* Custom Header or Default Header */}
         {!hideDefaultHeader && (
@@ -105,11 +91,6 @@ export default function AppScreen({
             {children}
           </div>
         </div>
-
-        {/* Navigation Bar */}
-        {!hideNavigationBar && (
-          <NavigationBar variant={isLight ? "dark" : "light"} />
-        )}
       </div>
   )
 }

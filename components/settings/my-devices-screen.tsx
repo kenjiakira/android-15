@@ -1,7 +1,7 @@
 "use client"
 
 import DeviceSpecsScreen from "@/components/settings/device-specs-screen"
-import AppScreen from "@/components/app-screen"
+import AppScreen from "@/components/"
 import BackButton from "@/components/atoms/back-button"
 import { useState } from "react"
 interface MyDevicesScreenProps {

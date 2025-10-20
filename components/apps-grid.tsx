@@ -134,7 +134,7 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
                     draggable={false}
                     onDragStart={(e) => e.preventDefault()}
                   >
-                    <div className="flex flex-col items-center gap-2">
+                    <div className="flex flex-col items-center gap-2 w-full">
                       <div
                         className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${app.color} flex items-center justify-center text-white shadow-lg transition-all active:scale-95 relative overflow-hidden`}
                       >
@@ -145,9 +145,14 @@ export default function AppsGrid({ apps, onAppSelect }: AppsGridProps) {
                           className="object-cover rounded-2xl"
                         />
                       </div>
-                      <span className="text-xs font-medium text-white text-center line-clamp-1 font-mi-sans w-full">
-                        {app.name}
-                      </span>
+                      <div className="w-full flex justify-center">
+                        <span className="font-medium text-white text-center font-mi-sans leading-tight" 
+                              style={{
+                                fontSize: app.name.length > 8 ? '10px' : app.name.length > 6 ? '11px' : '12px'
+                              }}>
+                          {app.name}
+                        </span>
+                      </div>
                     </div>
                   </button>
                 ))}

@@ -1,6 +1,6 @@
 "use client"
 import { Cpu, Info, Smartphone } from "lucide-react"
-import AppScreen from "@/components/app-screen"
+import AppScreen from "@/components/"
 import BackButton from "@/components/atoms/back-button"
 
 interface DeviceSpecsScreenProps {

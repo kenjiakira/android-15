@@ -96,13 +96,6 @@ export const appRegistry: AppRegistry = {
     color: "from-green-400 to-green-600",
     category: "system"
   },
-  keyboard: {
-    id: "keyboard",
-    name: "Virtual Keyboard",
-    image: "/keyboard-icon.svg",
-    color: "from-gray-400 to-gray-600",
-    category: "system"
-  },
   'mi-get-apps': {
     id: 'mi-get-apps',
     name: 'Mi Get Apps',
