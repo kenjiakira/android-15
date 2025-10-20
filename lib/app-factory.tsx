@@ -19,6 +19,7 @@ import FacebookScreen from "@/components/apps/facebook-screen"
 import ZaloScreen from "@/components/apps/zalo-screen"
 import GooglePhotosScreen from "@/components/apps/google-photos-screen"
 import ThemeScreen from "@/components/apps/theme-screen"
+import CameraScreen from "@/components/apps/camera-screen"
 
 export function registerAppComponents() {
   const appRouter = AppRouter.getInstance()
@@ -40,6 +41,7 @@ export function registerAppComponents() {
   appRouter.registerApp("zalo", ZaloScreen)
   appRouter.registerApp("google-photo", GooglePhotosScreen)
   appRouter.registerApp("theme", ThemeScreen)
+  appRouter.registerApp("camera", CameraScreen)
 }
 
 export function useAppRegistration() {

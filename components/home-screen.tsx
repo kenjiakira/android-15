@@ -127,7 +127,7 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
 
       {/* Bottom gesture capture overlay to ensure exit works over clickable elements */}
       <div
-        className="absolute bottom-0 left-0 right-0 z-50"
+        className="absolute bottom-0 left-0 right-0 z-20"
         style={{ height: '200px' }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -155,7 +155,7 @@ export default function HomeScreen({ onLock, onOpenCamera }: HomeScreenProps) {
       </AppExitAnimation>
 
       {/* Dock Bar */}
-      <div className={`absolute bottom-6 left-0 right-0 z-30 px-4 transition-all duration-300 ${
+      <div className={`absolute bottom-6 left-0 right-0 z-40 px-4 transition-all duration-300 pointer-events-auto ${
         isTransitioning ? 'translate-y-1 scale-95 opacity-90' : 'translate-y-0 scale-100 opacity-100'
       }`}>
         <Dock onAppSelect={handleAppSelect} />
